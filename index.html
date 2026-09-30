@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalEase - AI Legal Document Generator</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1>⚖ LegalEase</h1>
+    <p>AI-Powered Legal Document Generator</p>
+  </div>
+</header>
+
+<main class="container">
+  <div class="notice">
+    <strong>Important:</strong> LegalEase creates AI-assisted drafts. It is not a law firm
+    and the generated content is not a substitute for advice from a qualified lawyer.
+  </div>
+
+  <section class="grid">
+    <form id="generatorForm" class="card">
+      <h2>1. Document Details</h2>
+
+      <label>Document Type</label>
+      <select name="document_type" id="document_type" required>
+        {% for key, label in document_types.items() %}
+          <option value="{{ key }}">{{ label }}</option>
+        {% endfor %}
+      </select>
+
+      <div class="two">
+        <div>
+          <label>Party A</label>
+          <input name="party_a" required placeholder="Employer / Disclosing Party / Landlord">
+        </div>
+        <div>
+          <label>Party B</label>
+          <input name="party_b" required placeholder="Employee / Receiving Party / Tenant">
+        </div>
+      </div>
+
+      <label>Effective Date</label>
+      <input type="date" name="effective_date" required>
+
+      <div id="employmentFields">
+        <label>Role</label>
+        <input name="role" placeholder="Software Developer">
+
+        <label>Compensation</label>
+        <input name="compensation" placeholder="₹50,000 per month">
+      </div>
+
+      <div id="ndaFields" class="hidden">
+        <label>Confidentiality Scope</label>
+        <textarea name="confidentiality_scope" placeholder="Describe information to be protected"></textarea>
+      </div>
+
+      <div id="leaseFields" class="hidden">
+        <label>Property Address</label>
+        <textarea name="address" placeholder="Full property address"></textarea>
+
+        <div class="two">
+          <div>
+            <label>Lease Term</label>
+            <input name="lease_term" placeholder="11 months">
+          </div>
+          <div>
+            <label>Monthly Rent</label>
+            <input name="monthly_rent" placeholder="₹20,000">
+          </div>
+        </div>
+      </div>
+
+      <label>Key Terms</label>
+      <textarea name="key_terms" placeholder="Notice period, special conditions, payment terms, etc."></textarea>
+
+      <label>Company / Brand Name</label>
+      <input name="company_name" placeholder="Your company name">
+
+      <label>Company Logo (PNG/JPG, max 2 MB)</label>
+      <input type="file" name="logo" accept=".png,.jpg,.jpeg">
+
+      <label>Custom Instructions</label>
+      <textarea name="custom_instructions" placeholder="Optional instructions for the AI draft"></textarea>
+
+      <button type="submit" id="generateBtn">✨ Generate Document</button>
+      <p id="status" class="status"></p>
+    </form>
+
+    <section class="card preview-card">
+      <div class="preview-head">
+        <h2>2. Editable Preview</h2>
+        <div class="actions">
+          <button class="small" type="button" onclick="exportDoc('pdf')">PDF</button>
+          <button class="small" type="button" onclick="exportDoc('docx')">DOCX</button>
+          <button class="small" type="button" onclick="exportDoc('txt')">TXT</button>
+        </div>
+      </div>
+
+      <textarea id="preview" placeholder="Your generated document will appear here..."></textarea>
+
+      <h3>Automatic Term Table</h3>
+      <table id="termsTable">
+        <thead><tr><th>Term</th><th>Value</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="notice" class="notice compact">
+        Generate a document to enable exports.
+      </div>
+    </section>
+  </section>
+</main>
+
+<script src="{{ url_for('static', path='script.js') }}"></script>
+</body>
+</html>
